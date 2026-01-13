@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Preview Your Complaint</h2>
+    <p>Please review your complaint details before submitting.</p>
+
+    <!-- Customer Details -->
+    <div class="card mb-4">
+        <div class="card-header"><strong>Customer Details</strong></div>
+        <div class="card-body">
+            <p><strong>Name:</strong> {{ name }}</p>
+            <p><strong>Phone:</strong> {{ phone }}</p>
+            <p><strong>Email:</strong> {{ email }}</p>
+            <p><strong>Address:</strong> {{ address }}</p>
+            <p><strong>City:</strong> {{ city }}</p>
+            <p><strong>State:</strong> {{ state }}</p>
+            <p><strong>Zip:</strong> {{ zip }}</p>
+        </div>
+    </div>
+
+    <!-- Complaint Details -->
+    <div class="card mb-4">
+        <div class="card-header"><strong>Complaint Details</strong></div>
+        <div class="card-body">
+            <p>{{ complaint }}</p>
+        </div>
+    </div>
+
+    <!-- Department Details -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <strong>Department where your complaint will be forwarded</strong>
+        </div>
+        <div class="card-body">
+            <p><strong>Department:</strong> <span id="dept_name">{{ dept_info['Department'] }}</span></p>
+            <p><strong>Phone:</strong> <span id="dept_phone">{{ dept_info['Phone'] }}</span></p>
+            <p><strong>Email:</strong> <span id="dept_email">{{ dept_info['Email'] }}</span></p>
+        </div>
+    </div>
+
+    <!-- Feedback Form -->
+    <div class="card mb-4">
+        <div class="card-header"><strong>Do you think this department is wrong?</strong></div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="correct_department" class="form-label">Select Correct Department:</label>
+                <select class="form-control" name="correct_department" id="correct_department">
+                    {% for dept in departments_data %}
+                        <option value="{{ dept['Department'] }}"
+                            data-phone="{{ dept['Contact'] }}"
+                            data-email="{{ dept['Email'] }}"
+                            {% if dept['Department'] == dept_info['Department'] %}selected{% endif %}>
+                            {{ dept['Department'] }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Final Confirmation Form -->
+    <form action="{{ url_for('confirm_complaint') }}" method="POST">
+        <!-- Hidden fields -->
+        <input type="hidden" name="name" value="{{ name }}">
+        <input type="hidden" name="phone" value="{{ phone }}">
+        <input type="hidden" name="email" value="{{ email }}">
+        <input type="hidden" name="address" value="{{ address }}">
+        <input type="hidden" name="city" value="{{ city }}">
+        <input type="hidden" name="state" value="{{ state }}">
+        <input type="hidden" name="zip" value="{{ zip }}">
+        <input type="hidden" name="complaint" value="{{ complaint }}">
+        <input type="hidden" name="department" id="hidden_department" value="{{ dept_info['Department'] }}">
+
+        <button type="submit" class="btn btn-success">Raise Complaint</button>
+        <a href="{{ url_for('home') }}" class="btn btn-secondary">Edit Details</a>
+    </form>
+</div>
+
+<!-- Live Update Script -->
+<script>
+document.getElementById("correct_department").addEventListener("change", function() {
+    var selected = this.options[this.selectedIndex];
+    document.getElementById("dept_name").textContent = selected.value;
+    document.getElementById("dept_phone").textContent = selected.getAttribute("data-phone");
+    document.getElementById("dept_email").textContent = selected.getAttribute("data-email");
+    document.getElementById("hidden_department").value = selected.value;
+});
+</script>
+{% endblock %}

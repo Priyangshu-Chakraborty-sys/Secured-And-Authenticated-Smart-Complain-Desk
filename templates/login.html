@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white text-center">
+                <h3>🔗 Connect Your Wallet</h3>
+                <p class="mb-0">Secure blockchain-based complaint system</p>
+            </div>
+            <div class="card-body">
+                <div id="wallet-connection">
+                    <div class="text-center mb-4">
+                        <img src="https://via.placeholder.com/100x100/007bff/ffffff?text=🔗" 
+                             class="rounded-circle mb-3" alt="Blockchain">
+                        <p class="text-muted">
+                            Connect your Ethereum wallet to submit and track complaints securely on the blockchain.
+                        </p>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button id="connect-metamask" class="btn btn-warning btn-lg">
+                            🦊 Connect MetaMask
+                        </button>
+                        <button id="connect-walletconnect" class="btn btn-info btn-lg" disabled>
+                            📱 WalletConnect (Coming Soon)
+                        </button>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <h6>Why connect a wallet?</h6>
+                        <ul class="list-unstyled small text-muted">
+                            <li>✅ Secure authentication without passwords</li>
+                            <li>✅ Immutable complaint records on blockchain</li>
+                            <li>✅ Transparent and verifiable complaint tracking</li>
+                            <li>✅ No central authority can modify your complaints</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div id="wallet-status" class="d-none">
+                    <div class="alert alert-success">
+                        <strong>Wallet Connected!</strong><br>
+                        <span id="connected-address"></span>
+                    </div>
+                    <div class="d-grid">
+                        <a href="{{ url_for('home') }}" class="btn btn-primary">Continue to Application</a>
+                    </div>
+                </div>
+                
+                <div id="wallet-error" class="alert alert-danger d-none">
+                    <strong>Connection Failed!</strong><br>
+                    <span id="error-message"></span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-3">
+            <small class="text-muted">
+                Don't have a wallet? 
+                <a href="https://metamask.io/download/" target="_blank">Install MetaMask</a>
+            </small>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/web3-integration.js') }}"></script>
+{% endblock %}
